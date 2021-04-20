@@ -2,6 +2,8 @@ from source import app
 from flask import request, make_response
 from source.models.courses_model import courses_model
 from flask_cors import CORS,cross_origin
+import os
+import time
 
 obj=courses_model()
 
@@ -25,7 +27,7 @@ def list_course():
     except Exception as e:
         return make_response({"Error":"Contact developer"},500)
 
-@app.route("/courses/read2")
+@app.route("/courses/pending_courses")
 @cross_origin()
 def list_course2():
     try:
@@ -58,7 +60,8 @@ def delete_course(course_id):
 @cross_origin()
 def list_deleted_courses():
     try:
-        return obj.list_deleted_courses_model()
+        data=request.form.to_dict()
+        return obj.list_deleted_courses_model(data)
 
     except Exception as e:
         return make_response({"Error":"Contact developer"},500)
@@ -90,3 +93,15 @@ def publish_course(course_id):
     except Exception as e:
         return make_response({"Error":"Contact developer"},500)
 
+@app.route("/courses/upload_img", methods=["POST"])
+@cross_origin()
+def upload_img():
+    file=request.files['file']
+    current_time=str(time.time())
+    time_frags=current_time.split(".")
+    final_filename=time_frags[0]+time_frags[1]+os.path.splitext(file.filename)[1]
+    # print(os.path.splitext(file.filename))
+    # print(os.path.splitext(file.filename)[1])
+    file.save(os.path.join("C:/Users/Anuja Ghegadmal/Documents/Projects/mvc_practice/source/uploads",final_filename))
+    # print(file.filename)
+    return "upload"

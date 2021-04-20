@@ -22,7 +22,7 @@ class courses_model:
             self.cursor.execute("select * from courses_v where status='a'")
             fetched_data=self.cursor.fetchall()
             print(fetched_data)
-            return make_response({"status_message":"EXECUTED"},200)
+            return make_response({"payload":fetched_data},200)
 
         except Exception as e:
             return make_response({"Error":"Contact developer"},500)
@@ -33,7 +33,7 @@ class courses_model:
             self.cursor.execute("select * from courses_v where status='p'")
             fetched_data=self.cursor.fetchall()
             print(fetched_data)
-            return make_response({"status_message":"EXECUTED"},200)
+            return make_response({"payload":fetched_data},200)
 
         except Exception as e:
             return make_response({"Error":"Contact developer"},500)
@@ -57,7 +57,7 @@ class courses_model:
         except Exception as e:
             return make_response({"Error":"Contact developer"},500)
 
-    def list_deleted_courses_model(self):
+    def list_deleted_courses_model(self,data):
         try:
             # list all deleted courses
             self.cursor.execute("select * from courses_v where status='d'")
